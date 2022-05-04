@@ -35,3 +35,25 @@ func (s *kucoin) GetPairs() (map[string]models.Pair, error) {
 func (s *kucoin) DepositAddress(asset models.Asset) (string, error) {
 	return "", common.ErrNotSupported
 }
+
+func (s *kucoin) GetMarket() (map[string]models.MarketAsset, error) {
+	var supportedPairsRes marketResponse
+	if err := utils.GetURL(fmt.Sprintf("%s/api/v1/market/allTickers", s.Api), &supportedPairsRes, nil); err != nil {
+		return nil, err
+	}
+
+	if len(supportedPairsRes.Data.Ticker) < 1 {
+		return nil, common.ErrReturnedLen0
+	}
+
+	market := make(map[string]models.MarketAsset)
+	for _, marketPair := range supportedPairsRes.Data.Ticker {
+		marketPairParsed, err := ParseMarket(marketPair)
+		if err != nil {
+			return nil, err
+		}
+		market[marketPairParsed.Symbol] = *marketPairParsed
+	}
+
+	return market, nil
+}

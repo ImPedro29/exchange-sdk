@@ -29,9 +29,16 @@ func TestKucoin_GetPairs(t *testing.T) {
 	require.NotEmpty(t, pairs)
 }
 
-func TestBinance_DepositAddress(t *testing.T) {
+func TestKucoin_DepositAddress(t *testing.T) {
 	address, err := exchange.DepositAddress(models.Asset{Symbol: "USDT"})
 
 	require.NoError(t, err)
 	require.NotEmpty(t, address)
+}
+
+func TestKucoin_GetMarket(t *testing.T) {
+	market, err := exchange.GetMarket()
+
+	require.NoError(t, err)
+	require.NotEmpty(t, market)
 }

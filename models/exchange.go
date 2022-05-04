@@ -1,5 +1,7 @@
 package models
 
+import "github.com/shopspring/decimal"
+
 type PairStatus int
 
 const (
@@ -22,4 +24,16 @@ type Pair struct {
 	Status PairStatus `json:"status"`
 	Base   Asset      `json:"base"`
 	Quote  Asset      `json:"quote"`
+}
+
+type MarketAsset struct {
+	Symbol      string           `json:"symbol,omitempty"`
+	Buy         *decimal.Decimal `json:"buy,omitempty"`
+	Sell        *decimal.Decimal `json:"sell,omitempty"`
+	ChangeRate  *decimal.Decimal `json:"changeRate,omitempty"`
+	High        *decimal.Decimal `json:"high,omitempty"`
+	Low         *decimal.Decimal `json:"low,omitempty"`
+	Volume      *decimal.Decimal `json:"volume,omitempty"`
+	VolumeValue *decimal.Decimal `json:"volumeValue,omitempty"`
+	Last        *decimal.Decimal `json:"last,omitempty"`
 }

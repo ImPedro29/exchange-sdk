@@ -35,3 +35,7 @@ func (s *mexc) GetPairs() (map[string]models.Pair, error) {
 func (s *mexc) DepositAddress(_ models.Asset) (string, error) {
 	return "", common.ErrNotSupported
 }
+
+func (s *mexc) GetMarket() (map[string]models.MarketAsset, error) {
+	return nil, common.ErrNotSupported
+}

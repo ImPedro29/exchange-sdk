@@ -5,6 +5,7 @@ import (
 	"strings"
 
 	"github.com/ImPedro29/exchange-sdk/models"
+	"github.com/shopspring/decimal"
 )
 
 const (
@@ -43,4 +44,58 @@ func ParsePair(pairForParse data) (string, *models.Pair) {
 			Precision: quotePrecision,
 		},
 	}
+}
+
+func ParseMarket(ticker tickerResponse) (*models.MarketAsset, error) {
+	buy, err := decimal.NewFromString(ticker.Buy)
+	if err != nil {
+		return nil, err
+	}
+
+	sell, err := decimal.NewFromString(ticker.Sell)
+	if err != nil {
+		return nil, err
+	}
+
+	changeRate, err := decimal.NewFromString(ticker.ChangeRate)
+	if err != nil {
+		return nil, err
+	}
+
+	high, err := decimal.NewFromString(ticker.High)
+	if err != nil {
+		return nil, err
+	}
+
+	low, err := decimal.NewFromString(ticker.Low)
+	if err != nil {
+		return nil, err
+	}
+
+	volume, err := decimal.NewFromString(ticker.Vol)
+	if err != nil {
+		return nil, err
+	}
+
+	volumeValue, err := decimal.NewFromString(ticker.VolValue)
+	if err != nil {
+		return nil, err
+	}
+
+	last, err := decimal.NewFromString(ticker.VolValue)
+	if err != nil {
+		return nil, err
+	}
+
+	return &models.MarketAsset{
+		Symbol:      ticker.Symbol,
+		Buy:         &buy,
+		Sell:        &sell,
+		ChangeRate:  &changeRate,
+		High:        &high,
+		Low:         &low,
+		Volume:      &volume,
+		VolumeValue: &volumeValue,
+		Last:        &last,
+	}, nil
 }
