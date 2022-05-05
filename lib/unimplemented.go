@@ -20,7 +20,6 @@ func (u UnimplementedExchange) DepositAddress(_ models.Asset) (string, error) {
 
 func (u UnimplementedExchange) GetMarket() (map[string]models.MarketAsset, error) {
 	return nil, common.ErrNotSupported
-
 }
 
 func (u UnimplementedExchange) Events() (interfaces.Events, error) {

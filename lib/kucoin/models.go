@@ -103,10 +103,3 @@ type websocketRequest struct {
 	PrivateChannel bool   `json:"privateChannel"`
 	Response       bool   `json:"response"`
 }
-
-type websocketResponse struct {
-	Data    interface{} `json:"data"`
-	Subject string      `json:"subject"`
-	Topic   string      `json:"topic"`
-	Type    string      `json:"type"`
-}

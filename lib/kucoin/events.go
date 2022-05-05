@@ -67,7 +67,7 @@ func (s *kucoinEvents) handler() {
 		case <-s.close:
 			return
 		default:
-			var object websocketResponse
+			var object models.KucoinMarket
 			if err := s.Conn.ReadJSON(&object); err != nil {
 				zap.L().Error("failed trying to read json from kucoin server", zap.Error(err))
 				continue
@@ -80,7 +80,7 @@ func (s *kucoinEvents) handler() {
 
 			function, ok := s.handlers[object.Topic]
 			if ok {
-				err := function(object.Data)
+				err := function(object)
 				if err != nil {
 					zap.L().Error("failed trying to handle function", zap.Error(err))
 					continue
