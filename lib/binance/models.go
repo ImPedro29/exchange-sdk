@@ -1,6 +1,9 @@
 package binance
 
+import "github.com/ImPedro29/exchange-sdk/lib"
+
 type binance struct {
+	*lib.UnimplementedExchange
 	Api    string `json:"api"`
 	Secret string `json:"secret"`
 	ApiKey string `json:"apiKey"`

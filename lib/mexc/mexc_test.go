@@ -13,7 +13,7 @@ import (
 var exchange interfaces.Exchange
 
 func TestMain(m *testing.M) {
-	exchange = mexc.NewMexc("https://www.mexc.com", "", "")
+	exchange = mexc.NewMexc("", "")
 
 	os.Exit(m.Run())
 }

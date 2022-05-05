@@ -14,10 +14,7 @@ var exchange interfaces.Exchange
 
 func TestMain(m *testing.M) {
 	//FIXME
-	exchange = binance.NewBinance(
-		"https://api.binance.com",
-		"",
-		"")
+	exchange = binance.NewBinance("", "")
 
 	os.Exit(m.Run())
 }

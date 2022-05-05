@@ -1,6 +1,9 @@
 package mexc
 
+import "github.com/ImPedro29/exchange-sdk/lib"
+
 type mexc struct {
+	*lib.UnimplementedExchange
 	Api       string `json:"api"`
 	AccessKey string `json:"accessKey"`
 	Secret    string `json:"secret"`

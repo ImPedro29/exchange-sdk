@@ -3,15 +3,15 @@ package mexc
 import (
 	"fmt"
 
-	"github.com/ImPedro29/exchange-sdk/common"
+	"github.com/ImPedro29/exchange-sdk/constraints"
 	"github.com/ImPedro29/exchange-sdk/interfaces"
 	"github.com/ImPedro29/exchange-sdk/models"
 	"github.com/ImPedro29/exchange-sdk/utils"
 )
 
-func NewMexc(api, accessKey, secret string) interfaces.Exchange {
+func NewMexc(accessKey, secret string) interfaces.Exchange {
 	return &mexc{
-		Api:       api,
+		Api:       fmt.Sprintf("https://%s", constraints.Mexc),
 		AccessKey: accessKey,
 		Secret:    secret,
 	}
@@ -30,12 +30,4 @@ func (s *mexc) GetPairs() (map[string]models.Pair, error) {
 	}
 
 	return pairs, nil
-}
-
-func (s *mexc) DepositAddress(_ models.Asset) (string, error) {
-	return "", common.ErrNotSupported
-}
-
-func (s *mexc) GetMarket() (map[string]models.MarketAsset, error) {
-	return nil, common.ErrNotSupported
 }

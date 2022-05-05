@@ -3,15 +3,15 @@ package binance
 import (
 	"fmt"
 
-	"github.com/ImPedro29/exchange-sdk/common"
+	"github.com/ImPedro29/exchange-sdk/constraints"
 	"github.com/ImPedro29/exchange-sdk/interfaces"
 	"github.com/ImPedro29/exchange-sdk/models"
 	"github.com/ImPedro29/exchange-sdk/utils"
 )
 
-func NewBinance(api, apiKey, secret string) interfaces.Exchange {
+func NewBinance(apiKey, secret string) interfaces.Exchange {
 	return &binance{
-		Api:    api,
+		Api:    fmt.Sprintf("https://%s", constraints.Binance),
 		Secret: secret,
 		ApiKey: apiKey,
 	}
@@ -50,8 +50,4 @@ func (s *binance) DepositAddress(asset models.Asset) (string, error) {
 	}
 
 	return depositAddressRes.Address, nil
-}
-
-func (s *binance) GetMarket() (map[string]models.MarketAsset, error) {
-	return nil, common.ErrNotSupported
 }

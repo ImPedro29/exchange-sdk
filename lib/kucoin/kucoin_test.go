@@ -1,6 +1,7 @@
 package kucoin_test
 
 import (
+	"log"
 	"os"
 	"testing"
 
@@ -8,16 +9,20 @@ import (
 	"github.com/ImPedro29/exchange-sdk/lib/kucoin"
 	"github.com/ImPedro29/exchange-sdk/models"
 	"github.com/stretchr/testify/require"
+	"go.uber.org/zap"
 )
 
 var exchange interfaces.Exchange
 
 func TestMain(m *testing.M) {
 	//FIXME
-	exchange = kucoin.NewKucoin(
-		"https://api.kucoin.com",
-		"",
-		"")
+	exchange = kucoin.NewKucoin("", "")
+
+	logger, err := zap.NewDevelopment()
+	if err != nil {
+		log.Fatalln(err)
+	}
+	zap.ReplaceGlobals(logger)
 
 	os.Exit(m.Run())
 }

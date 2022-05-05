@@ -4,16 +4,22 @@ import (
 	"fmt"
 
 	"github.com/ImPedro29/exchange-sdk/common"
+	"github.com/ImPedro29/exchange-sdk/constraints"
 	"github.com/ImPedro29/exchange-sdk/interfaces"
 	"github.com/ImPedro29/exchange-sdk/models"
 	"github.com/ImPedro29/exchange-sdk/utils"
 )
 
-func NewKucoin(api, apiKey, secret string) interfaces.Exchange {
+func NewKucoin(apiKey, secret string) interfaces.Exchange {
 	return &kucoin{
-		Api:    api,
+		Api:    fmt.Sprintf("https://%s", constraints.KuCoin),
 		Secret: secret,
 		Key:    apiKey,
+		events: &kucoinEvents{
+			Api:      fmt.Sprintf("wss://%s", constraints.KuCoin),
+			handlers: make(map[string]models.EventHandler),
+			close:    make(chan bool),
+		},
 	}
 }
 
@@ -30,10 +36,6 @@ func (s *kucoin) GetPairs() (map[string]models.Pair, error) {
 	}
 
 	return pairs, nil
-}
-
-func (s *kucoin) DepositAddress(asset models.Asset) (string, error) {
-	return "", common.ErrNotSupported
 }
 
 func (s *kucoin) GetMarket() (map[string]models.MarketAsset, error) {

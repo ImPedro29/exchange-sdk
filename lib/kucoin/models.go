@@ -1,9 +1,27 @@
 package kucoin
 
+import (
+	"github.com/ImPedro29/exchange-sdk/lib"
+	"github.com/ImPedro29/exchange-sdk/models"
+	"github.com/gorilla/websocket"
+)
+
 type kucoin struct {
+	*lib.UnimplementedExchange
 	Api    string `json:"api"`
 	Secret string `json:"secret"`
 	Key    string `json:"key"`
+	events *kucoinEvents
+}
+
+type kucoinEvents struct {
+	Started   bool            `json:"started"`
+	Api       string          `json:"api"`
+	Token     string          `json:"token"`
+	ConnectID string          `json:"connectID"`
+	Conn      *websocket.Conn `json:"conn"`
+	handlers  map[string]models.EventHandler
+	close     chan bool
 }
 
 type data struct {
@@ -56,4 +74,39 @@ type tickerResponse struct {
 	MakerFeeRate     string `json:"makerFeeRate"`
 	TakerCoefficient string `json:"takerCoefficient"`
 	MakerCoefficient string `json:"makerCoefficient"`
+}
+
+// Websocket
+type websocketStartResponse struct {
+	Code string `json:"code"`
+	Data struct {
+		Token           string `json:"token"`
+		InstanceServers []struct {
+			Endpoint     string `json:"endpoint"`
+			Encrypt      bool   `json:"encrypt"`
+			Protocol     string `json:"protocol"`
+			PingInterval int    `json:"pingInterval"`
+			PingTimeout  int    `json:"pingTimeout"`
+		} `json:"instanceServers"`
+	} `json:"data"`
+}
+
+type websocketWelcomeResponse struct {
+	Id   string `json:"id"`
+	Type string `json:"type"`
+}
+
+type websocketRequest struct {
+	Id             int64  `json:"id"`
+	Type           string `json:"type"`
+	Topic          string `json:"topic"`
+	PrivateChannel bool   `json:"privateChannel"`
+	Response       bool   `json:"response"`
+}
+
+type websocketResponse struct {
+	Data    interface{} `json:"data"`
+	Subject string      `json:"subject"`
+	Topic   string      `json:"topic"`
+	Type    string      `json:"type"`
 }
