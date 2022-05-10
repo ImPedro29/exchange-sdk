@@ -59,3 +59,11 @@ func (s *kucoin) GetMarket() (map[string]models.MarketAsset, error) {
 
 	return market, nil
 }
+
+func (s *kucoin) CreateOrder(data *models.OrderCreation) error {
+	if data == nil {
+		return common.ErrEmptyData
+	}
+
+	return nil
+}

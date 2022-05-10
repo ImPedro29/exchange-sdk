@@ -15,13 +15,14 @@ type kucoin struct {
 }
 
 type kucoinEvents struct {
-	Started   bool            `json:"started"`
-	Api       string          `json:"api"`
-	Token     string          `json:"token"`
-	ConnectID string          `json:"connectID"`
-	Conn      *websocket.Conn `json:"conn"`
-	handlers  map[string]models.EventHandler
-	close     chan bool
+	Started      bool            `json:"started"`
+	Api          string          `json:"api"`
+	Token        string          `json:"token"`
+	ConnectID    string          `json:"connectID"`
+	Conn         *websocket.Conn `json:"conn"`
+	handlers     map[string]models.EventHandler
+	close        chan bool
+	pingInterval int
 }
 
 type data struct {
@@ -91,7 +92,7 @@ type websocketStartResponse struct {
 	} `json:"data"`
 }
 
-type websocketWelcomeResponse struct {
+type websocketMessage struct {
 	Id   string `json:"id"`
 	Type string `json:"type"`
 }

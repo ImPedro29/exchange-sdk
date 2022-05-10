@@ -7,6 +7,8 @@ type Exchange interface {
 	DepositAddress(pair models.Asset) (string, error)
 	GetMarket() (map[string]models.MarketAsset, error)
 	Events() (Events, error)
+	CreateOrder(data *models.OrderCreation) error
+	//CancelOrder (id string) error
 }
 
 type Events interface {

@@ -10,6 +10,10 @@ var _ interfaces.Exchange = (*UnimplementedExchange)(nil)
 
 type UnimplementedExchange struct{}
 
+func (u UnimplementedExchange) CreateOrder(_ *models.OrderCreation) error {
+	return common.ErrNotSupported
+}
+
 func (u UnimplementedExchange) GetPairs() (map[string]models.Pair, error) {
 	return nil, common.ErrNotSupported
 }

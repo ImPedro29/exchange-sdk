@@ -4,6 +4,7 @@ import (
 	"context"
 	"fmt"
 	"math/rand"
+	"time"
 
 	"github.com/ImPedro29/exchange-sdk/common"
 	"github.com/ImPedro29/exchange-sdk/constraints"
@@ -46,7 +47,7 @@ func (s *kucoin) Events() (interfaces.Events, error) {
 		return nil, err
 	}
 
-	var wsResponse websocketWelcomeResponse
+	var wsResponse websocketMessage
 	if err := c.ReadJSON(&wsResponse); err != nil {
 		return nil, err
 	}
@@ -55,6 +56,7 @@ func (s *kucoin) Events() (interfaces.Events, error) {
 		return nil, common.ErrIdReturnedWrong
 	}
 
+	s.events.pingInterval = response.Data.InstanceServers[0].PingInterval
 	s.events.Conn = c
 	go s.events.handler()
 
@@ -62,10 +64,21 @@ func (s *kucoin) Events() (interfaces.Events, error) {
 }
 
 func (s *kucoinEvents) handler() {
+	tik := time.NewTicker(time.Millisecond * time.Duration(s.pingInterval))
+
 	for {
 		select {
 		case <-s.close:
+			tik.Stop()
 			return
+		case <-tik.C:
+			if err := s.Conn.WriteJSON(websocketMessage{
+				Id:   fmt.Sprintf("%d", rand.Int63()),
+				Type: "ping",
+			}); err != nil {
+				zap.L().Error("failed trying to write ping message to kucoin server", zap.Error(err))
+				continue
+			}
 		default:
 			var object models.KucoinMarket
 			if err := s.Conn.ReadJSON(&object); err != nil {

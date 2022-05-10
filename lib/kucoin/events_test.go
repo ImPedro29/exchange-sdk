@@ -23,5 +23,5 @@ func TestKucoinEvents_Start(t *testing.T) {
 	})
 
 	require.NoError(t, err)
-	time.Sleep(time.Second * 5)
+	time.Sleep(time.Second * 5000)
 }
